@@ -1,6 +1,7 @@
 import React from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./style.css"
+import "./style.css";
+import "./loginScript.js";
 
 const UserLogin = () => {
     return (
