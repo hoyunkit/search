@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./about.css";
-
+import { FaSearch } from "react-icons/fa";
 const Search = () => {
   const [searchText, setSearchText] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc"); // Initial sorting order is ascending
@@ -76,14 +76,16 @@ const Search = () => {
   return (
     <div className="container">
       <div className="title">
-        <b>Location Search Result</b>
+        <b>
+          Location Search Result &nbsp;
+          <FaSearch />
+        </b>
       </div>
       <br />
       <div className="keyword_bx">
         <div className="search_box">Enter keywords:</div>
 
         <div>
-          <br />
           <input
             id="input_keywords"
             type="text"
