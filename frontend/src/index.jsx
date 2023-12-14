@@ -3,7 +3,9 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Favourite from "./components/favourite/Favourite";
 import Search from "./components/search/Search";
-
+import UserLogin from "./components/authentications/UserLogin";
+import AdminLogin from "./components/authentications/AdminLogin";
+import Map from "./components/map/Map";
 const Home = () => <div>Home Component</div>;
 const NoMatch = () => <div>404 Components not found</div>;
 
@@ -30,6 +32,21 @@ class App extends React.Component {
                     Favourite
                   </Link>
                 </li>
+                <li>
+                  <Link to="/userlogin" style={{ fontSize: "20px" }}>
+                    UserLogin
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/adminLogin" style={{ fontSize: "20px" }}>
+                    AdminLogin
+                  </Link>
+                </li>
+                <li>
+                <Link to="/map" style={{ fontSize: "20px" }}>
+                    Map
+                  </Link>
+                </li>
               </ul>
             </div>
             <button className="logOut">Log out</button>
@@ -41,6 +58,9 @@ class App extends React.Component {
             <Route path="/" element={<Home />} />
             <Route path="/favourite" element={<Favourite />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/userlogin" element={<UserLogin />} />
+            <Route path="/adminlogin" element={<AdminLogin />} />
+            <Route path="/map" element={<Map />} />
             <Route path="*" element={<NoMatch />} />
           </Routes>
         </BrowserRouter>
