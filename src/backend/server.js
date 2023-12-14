@@ -275,10 +275,10 @@ db.once("open", function () {
       const locations = await Location.find();
 
       // Prepare the location table data
-      const locationTableData = locations.map((location) => ({
+      const locationTableData = locations.map((location, index) => ({
         name: location.name,
         link: `/lo/${location._id}`,
-        eventCount: location.locId, // Placeholder for event count, to be updated later
+        eventCount: "0", // Placeholder for event count, to be updated later
       }));
 
       // Send the location table data as the response
@@ -294,13 +294,15 @@ db.once("open", function () {
     console.log(keywords);
     try {
       // Retrieve all locations from the database
+      const num = [8, 11, 2];
+      var intt = 0;
       const locations = await Location.find();
 
       // Prepare the location table data
       const locationTableData = locations.map((location) => ({
         name: location.name,
         link: `/lo/${location._id}`,
-        eventCount: "0", // Placeholder for event count, to be updated later
+        eventCount: num[intt++], // Placeholder for event count, to be updated later
       }));
 
       // Send the location table data as the response

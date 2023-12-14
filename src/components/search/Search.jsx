@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./about.css";
 
 const Search = () => {
@@ -35,12 +35,12 @@ const Search = () => {
     setSortingOrder(newSortingOrder);
 
     const sorted = [...sortedData].sort((a, b) => {
-      if (a.no === "") return 1;
-      if (b.no === "") return -1;
+      if (a.eventCount === "") return 1;
+      if (b.eventCount === "") return -1;
       if (newSortingOrder === "desc") {
-        return parseInt(a.no) - parseInt(b.no);
+        return parseInt(a.eventCount) - parseInt(b.eventCount);
       } else {
-        return parseInt(b.no) - parseInt(a.no);
+        return parseInt(b.eventCount) - parseInt(a.eventCount);
       }
     });
 
@@ -53,6 +53,24 @@ const Search = () => {
     console.log(internalLink);
     window.open(link, "_blank"); // Open the link in a new tab
     // or you can use window.location.href = link; to redirect in the same tab
+  };
+
+  // Generate empty rows if sortedData length is less than 10
+  const generateEmptyRows = () => {
+    const emptyRows = [];
+    const remainingRows = 10 - sortedData.length;
+
+    for (let i = 0; i < remainingRows; i++) {
+      emptyRows.push(
+        <tr key={`empty-row-${i}`}>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      );
+    }
+
+    return emptyRows;
   };
 
   return (
@@ -94,27 +112,20 @@ const Search = () => {
             </tr>
           </thead>
           <tbody>
-            {[...Array(10)].map((_, index) => {
-              const item = sortedData[index];
-              console.log(item);
-              const num = [8, 11, 2];
-              return (
-                <tr key={index}>
-                  <td id={`name-${index + 1}`}>{item?.name || ""}</td>
-                  <td
-                    id={`link-${index + 1}`}
-                    onClick={(event) =>
-                      handleLinkClick(event, item?.link || "")
-                    }
-                    style={{ cursor: "pointer" }}
-                  >
-                    <u>{item?.link || ""}</u>
-                  </td>
-                  <td id={`no-${index + 1}`}>{num[index] || ""}</td>
-                  {/* <td id={`no-${index + 1}`}>{item?.eventCount || ""}</td> */}
-                </tr>
-              );
-            })}
+            {sortedData.map((item, index) => (
+              <tr key={index}>
+                <td id={`name-${index + 1}`}>{item?.name || ""}</td>
+                <td
+                  id={`link-${index + 1}`}
+                  onClick={(event) => handleLinkClick(event, item?.link || "")}
+                  style={{ cursor: "pointer" }}
+                >
+                  <u>{item?.link || ""}</u>
+                </td>
+                <td id={`no-${index + 1}`}>{item?.eventCount || ""}</td>
+              </tr>
+            ))}
+            {generateEmptyRows()}
           </tbody>
         </table>
       </div>
