@@ -271,7 +271,42 @@ db.once("open", function () {
     });
 
     */
+  //get fav
+  // Fetch all locations: GET
+  app.get("/fav", (req, res) => {
+    Location.find({})
+      .exec()
+      .then((filteredLocations) => {
+        const locationTableData = filteredLocations.map((location) => ({
+          name: location.name,
+          link: `http://localhost:3000/lo/${location.locId}`,
+          eventCount: 0, // Placeholder for event count, to be updated later
+          locationId: location._id, // Store the location's Object ID for reference
+        }));
 
+        const promises = locationTableData.map((locationData) => {
+          return Event.countDocuments({ loc: locationData.locationId })
+            .then((eventCount) => {
+              locationData.eventCount = eventCount;
+            })
+            .catch((error) => {
+              console.error("Error fetching event count:", error);
+              locationData.eventCount = 0; // Set event count to 0 in case of an error
+            });
+        });
+
+        Promise.all(promises)
+          .then(() => {
+            res.json(locationTableData);
+          })
+          .catch((error) => {
+            console.error("Error fetching event count:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error handling search:", error);
+      });
+  });
   // Fetch all locations: GET
   app.get("/lo", (req, res) => {
     Location.find()

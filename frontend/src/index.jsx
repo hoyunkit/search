@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Print from "./components/print/Print";
+import Favourite from "./components/favourite/Favourite";
 import Search from "./components/search/Search";
 
 const Home = () => <div>Home Component</div>;
@@ -22,23 +22,24 @@ class App extends React.Component {
                 </li>
                 <li>
                   <Link to="/search" style={{ fontSize: "20px" }}>
-                    Search
+                    Location Search
                   </Link>
                 </li>
                 <li>
-                  <Link to="/print" style={{ fontSize: "20px" }}>
-                    Print
+                  <Link to="/favourite" style={{ fontSize: "20px" }}>
+                    Favourite
                   </Link>
                 </li>
               </ul>
             </div>
+            <button className="logOut">Log out</button>
           </div>
 
           <hr />
 
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/print" element={<Print />} />
+            <Route path="/favourite" element={<Favourite />} />
             <Route path="/search" element={<Search />} />
             <Route path="*" element={<NoMatch />} />
           </Routes>
