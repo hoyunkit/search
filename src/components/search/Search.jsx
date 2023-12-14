@@ -1,40 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./about.css";
-
-const data = [
-  {
-    name: "3Name",
-    link: "Yuen-Chau-Kok",
-    no: "3",
-  },
-  {
-    name: "Random",
-    link: "https://www.google.com/",
-    no: "9999",
-  },
-  {
-    name: "1Name",
-    link: "https://www.facebook.com/",
-    no: "1",
-  },
-  {
-    name: "2Name",
-    link: "2Link",
-    no: "2",
-  },
-];
-const dataSize = JSON.parse(JSON.stringify(data)).length;
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc"); // Initial sorting order is ascending
-  const [sortedData, setSortedData] = useState(data);
+  const [sortedData, setSortedData] = useState([]);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (searchText === "") {
       alert("Invalid input, please type it again!");
+      return;
     }
-    console.log(searchText);
+    try {
+      const response = await fetch("http://localhost:3000/keywords", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ search: searchText }),
+      });
+
+      const dataGOT = await response.json();
+      setSortedData(dataGOT);
+      console.log(dataGOT);
+    } catch (error) {
+      // Handle any errors
+      console.error(error);
+    }
     setSearchText("");
   };
 
@@ -42,7 +34,7 @@ const Search = () => {
     const newSortingOrder = sortingOrder === "asc" ? "desc" : "asc";
     setSortingOrder(newSortingOrder);
 
-    const sorted = [...data].sort((a, b) => {
+    const sorted = [...sortedData].sort((a, b) => {
       if (a.no === "") return 1;
       if (b.no === "") return -1;
       if (newSortingOrder === "desc") {
@@ -56,8 +48,7 @@ const Search = () => {
   };
 
   const handleLinkClick = (event, link) => {
-    var clickedText = event.target.textContent;
-    // console.log("Clicked Text:", clickedText);
+    const clickedText = event.target.textContent;
     const internalLink = `/ev/${clickedText}`;
     console.log(internalLink);
     window.open(link, "_blank"); // Open the link in a new tab
@@ -103,28 +94,27 @@ const Search = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <tr key={index}>
-                <td id={`name-${index + 1}`}>
-                  {index < dataSize ? sortedData[index].name : ""}
-                </td>
-                <td
-                  id={`link-${index + 1}`}
-                  onClick={(event) =>
-                    handleLinkClick(
-                      event,
-                      index < dataSize ? sortedData[index].link : ""
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
-                >
-                  <u>{index < dataSize ? sortedData[index].link : ""}</u>
-                </td>
-                <td id={`no-${index + 1}`}>
-                  {index < dataSize ? sortedData[index].no : ""}
-                </td>
-              </tr>
-            ))}
+            {[...Array(10)].map((_, index) => {
+              const item = sortedData[index];
+              console.log(item);
+              const num = [8, 11, 2];
+              return (
+                <tr key={index}>
+                  <td id={`name-${index + 1}`}>{item?.name || ""}</td>
+                  <td
+                    id={`link-${index + 1}`}
+                    onClick={(event) =>
+                      handleLinkClick(event, item?.link || "")
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    <u>{item?.link || ""}</u>
+                  </td>
+                  <td id={`no-${index + 1}`}>{num[index] || ""}</td>
+                  {/* <td id={`no-${index + 1}`}>{item?.eventCount || ""}</td> */}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
