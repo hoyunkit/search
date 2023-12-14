@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./about.css";
 import { FaSearch } from "react-icons/fa";
+
 const Search = () => {
   const [searchText, setSearchText] = useState("");
-  const [sortingOrder, setSortingOrder] = useState("asc"); // Initial sorting order is ascending
+  const [sortingOrder, setSortingOrder] = useState("asc");
   const [sortedData, setSortedData] = useState([]);
 
   const handleSearch = async () => {
@@ -24,7 +25,6 @@ const Search = () => {
       setSortedData(dataGOT);
       console.log(dataGOT);
     } catch (error) {
-      // Handle any errors
       console.error(error);
     }
     setSearchText("");
@@ -51,11 +51,9 @@ const Search = () => {
     const clickedText = event.target.textContent;
     const internalLink = `/ev/${clickedText}`;
     console.log(internalLink);
-    window.open(link, "_blank"); // Open the link in a new tab
-    // or you can use window.location.href = link; to redirect in the same tab
+    window.open(link, "_blank");
   };
 
-  // Generate empty rows if sortedData length is less than 10
   const generateEmptyRows = () => {
     const emptyRows = [];
     const remainingRows = 10 - sortedData.length;
@@ -81,10 +79,9 @@ const Search = () => {
           <FaSearch />
         </b>
       </div>
-      <br />
+      <div className="separator"></div>
       <div className="keyword_bx">
         <div className="search_box">Enter keywords:</div>
-
         <div>
           <input
             id="input_keywords"
