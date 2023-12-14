@@ -369,6 +369,19 @@ db.once("open", function () {
       });
   });
 
+  // Fetch coordinates of all locations
+  app.get("/coordinates", (req, res) => {
+    Location.find({})
+        .then(locations => {
+            const coordinates = locations.map(location => location.coordinates.coordinates);
+            res.json(coordinates);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send("Error occurred while fetching locations.");
+        });
+  });
+
   // Fetch locations with specific keywords in name field
   app.post("/keywords", (req, res) => {
     const keywords = req.body.search;

@@ -6,6 +6,7 @@ import Search from "./components/search/Search";
 import UserLogin from "./components/authentications/UserLogin";
 import AdminLogin from "./components/authentications/AdminLogin";
 import Map from "./components/map/Map";
+import Table from "./components/table/Table";
 const Home = () => <div>Home Component</div>;
 const NoMatch = () => <div>404 Components not found</div>;
 
@@ -22,6 +23,9 @@ class App extends React.Component {
                     Home
                   </Link>
                 </li>
+                <Link to="/table" style={{ fontSize: "20px" }}>
+                    Table of All Contents
+                  </Link>
                 <li>
                   <Link to="/search" style={{ fontSize: "20px" }}>
                     Location Search
@@ -58,6 +62,7 @@ class App extends React.Component {
             <Route path="/" element={<Home />} />
             <Route path="/favourite" element={<Favourite />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/table" element={<Table />} />
             <Route path="/userlogin" element={<UserLogin />} />
             <Route path="/adminlogin" element={<AdminLogin />} />
             <Route path="/map" element={<Map />} />
