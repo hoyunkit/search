@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import "./about.css";
 
 const Table = () => {
   const [locations, setLocations] = useState([]);
   const [sortAscending, setSortAscending] = useState(true);
-  const [coordinates, setCoordinates] = useState([]);
+  const [locationData, setLocationData] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:3000/lo')
@@ -31,7 +32,7 @@ const Table = () => {
     fetch('http://localhost:3000/coordinates')
       .then(response => response.json())
       .then(data => {
-        setCoordinates(data);
+        setLocationData(data);
       })
       .catch(error => console.error('Error:', error));
   }, []);
@@ -43,13 +44,7 @@ const Table = () => {
     setSortAscending(!sortAscending);
   };
 
-  {Array.isArray(coordinates) && coordinates.map((location, index) => {
-    console.log(location[0]);  // Add this line
-    return (
-      <p>{location[0]}</p>
-    );
-  })}
-  
+  const [timeoutId, setTimeoutId] = useState(null);
 
   return (
     <div className="container">
@@ -80,21 +75,45 @@ const Table = () => {
       </div>
       <br />
       <LoadScript googleMapsApiKey="AIzaSyDnl5cb5IkZERJGggE5xutunRr3n-fNfrw">
-        <GoogleMap
+      <GoogleMap
             mapContainerStyle={{ width: '85%', height: '85%' }}
             center={{ lat: 22.35665, lng: 114.12623 }}
             zoom={11}
           >
-            {Array.isArray(coordinates) && coordinates.map((location, index) => (
+            {Array.isArray(locationData) && locationData.map((location, index) => (
               <Marker
                 key={index}
                 position={{
-                  lat: location[0],
-                  lng: location[1]
+                  lat: location.lat,
+                  lng: location.lng
+                }}
+                onMouseOver={() => {
+                  clearTimeout(timeoutId);
+                  setSelectedLocation(location);
+                }}
+                onMouseOut={() => {
+                  setTimeoutId(setTimeout(() => {
+                    setSelectedLocation(null);
+                  }, 1000));
                 }}
               />
+  
             ))}
-
+            {selectedLocation && (
+              <InfoWindow
+                position={{
+                  lat: selectedLocation.lat,
+                  lng: selectedLocation.lng
+                }}
+                onCloseClick={() => {
+                  setSelectedLocation(null);
+                }}
+              >
+                <div>
+                  <p><a href={selectedLocation.link}>{selectedLocation.link}</a></p>
+                </div>
+              </InfoWindow>
+            )}
           </GoogleMap>
       </LoadScript>
     </div>

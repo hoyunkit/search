@@ -369,18 +369,23 @@ db.once("open", function () {
       });
   });
 
-  // Fetch coordinates of all locations
-  app.get("/coordinates", (req, res) => {
-    Location.find({})
-        .then(locations => {
-            const coordinates = locations.map(location => location.coordinates.coordinates);
-            res.json(coordinates);
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send("Error occurred while fetching locations.");
-        });
-  });
+  // Fetch coordinates and links of all locations
+app.get("/coordinates", (req, res) => {
+  Location.find({})
+    .then(locations => {
+      const data = locations.map(location => ({
+        lat: location.coordinates.coordinates[0],
+        lng: location.coordinates.coordinates[1],
+        link: `http://localhost:3000/lo/${location.locId}`,
+      }));
+      res.json(data);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send("Error occurred while fetching locations.");
+    });
+});
+
 
   app.get("/events", async (req, res) => {
     try {
