@@ -7,6 +7,7 @@ import UserLogin from "./components/authentications/UserLogin";
 import AdminLogin from "./components/authentications/AdminLogin";
 import Map from "./components/map/Map";
 import Table from "./components/table/Table";
+import Event from "./components/event/Event";
 const Home = () => <div>Home Component</div>;
 const NoMatch = () => <div>404 Components not found</div>;
 
@@ -29,6 +30,11 @@ class App extends React.Component {
                 <li>
                   <Link to="/search" style={{ fontSize: "20px" }}>
                     Location Search
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/event" style={{ fontSize: "20px" }}>
+                    Show Event
                   </Link>
                 </li>
                 <li>
@@ -63,6 +69,7 @@ class App extends React.Component {
             <Route path="/favourite" element={<Favourite />} />
             <Route path="/search" element={<Search />} />
             <Route path="/table" element={<Table />} />
+            <Route path="/event" element={<Event />} />
             <Route path="/userlogin" element={<UserLogin />} />
             <Route path="/adminlogin" element={<AdminLogin />} />
             <Route path="/map" element={<Map />} />
